@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: monospace;
+  background-color: black;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  color: #00ff88;
+}
+
+.sidebar {
+  width: 20vw;
+  border-right: 2px solid #00ff88;
+  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+}
+
+button {
+  background: transparent;
+  border: 1px solid #00ff88;
+  color: #00ff88;
+  padding: 10px;
+  cursor: pointer;
+  font-family: monospace;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #007e06;
+}
+
+.ativo {
+  color: white;
+  border-color: white;
+}
+
+.mapa {
+  border: 1px solid #00ff88;
+}
+
+.conteudo {
+  flex: 1;
+  padding: 40px;
+  color: #00ff88;
+}

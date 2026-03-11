@@ -1,0 +1,31 @@
+[
+  {
+    "id": 1,
+    "nome": "Tyrannosaurus Rex",
+    "periodo": "Cretáceo",
+    "dieta": "Carnívoro",
+    "tamanho": "12 metros",
+    "imagem": "/assets/imgs/dinopedia/trex.jpg"
+  },
+  {
+    "id": 2,
+    "nome": "Trike",
+    "periodo": "Cretáceo",
+    "dieta": "Herbívoro",
+    "tamanho": "x metros"
+  },
+  {
+    "id": 3,
+    "nome": "Raptor",
+    "periodo": "Cretáceo",
+    "dieta": "Carnívoro",
+    "tamanho": "y metros"
+  },
+  {
+    "id": 4,
+    "nome": "Stego",
+    "periodo": "Jurássico",
+    "dieta": "Herbívoro",
+    "tamanho": "z metros"
+  }
+]
