@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import Sistema from "./Sistema"
 import "../styles/Loading.css"
+import { tocarSom } from "../utils/audioGerenciador"
 
 const textosDeCarregamento = [
   "Carregando Dinopédia",
@@ -15,12 +16,10 @@ export default function Loading() {
   const [textoIndex, setTextoIndex] = useState(0)
   const [pontos, setPontos] = useState("")
 
-  const ambienteRef = useRef(null);
   const iniciarSistema = () => {
-    ambienteRef.current.volume = 0.2
-    ambienteRef.current.play();
-    setTela("booting");
-  };
+    tocarSom("ambiente")
+    setTela("booting")
+  }
 
   // Controla troca de frases
   useEffect(() => {
@@ -76,10 +75,6 @@ export default function Loading() {
       )}
 
       {tela === "system" && <Sistema />}
-
-      <audio ref={ambienteRef} loop>
-          <source src="/src/assets/audios/alienIsolationComputerSounds.mp3" type="audio/mpeg" />
-      </audio>
     </>
   )
 }

@@ -1,16 +1,21 @@
 export default function Sidebar({ aba, setAba }) {
-  const abas = ["Dinopédia", "Genes", "Recintos", "Câmeras"]
+  const abas =[
+    { id: "dinopedia", nome: "Dinopédia" },
+    { id: "genes", nome: "Genes" },
+    { id: "recintos", nome: "Recintos" },
+    { id: "cameras", nome: "Câmeras" }
+  ]
 
   return (
     <aside className="sidebar">
 
-      {abas.map(nome => (
+      {abas.map(abaEspecifica => (
         <button
-          key={nome}
-          className={aba === nome ? "ativo" : ""}
-          onClick={() => setAba(nome)}
+          key={abaEspecifica.id}
+          className={aba === abaEspecifica.id ? "ativo" : ""}
+          onClick={() => setAba(abaEspecifica.id)}
         >
-          {nome}
+          {abaEspecifica.nome}
         </button>
       ))}
       <img src="/assets/imgs/mapJP.png" className="mapa" />

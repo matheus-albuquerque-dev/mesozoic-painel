@@ -49,7 +49,7 @@ body {
     transparent 20px
   );
 
-  background-image: url("../assets/imgs/distorcaoAnalog.jpg");
+  background-image: url("/assets/imgs/ruidoDeTela.jpg");
   background-repeat: repeat;
   background-size: 500px 500px;
   mix-blend-mode: screen;
