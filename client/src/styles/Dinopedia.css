@@ -1,16 +1,36 @@
 .catalogo{
+    font-family: monospace;
     font-size: 2vw;
+    color: white;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2.5vh;
+    gap: 5vh;
+}
+
+.barraPesquisa{
+  font-size:1rem;
+
+  background-color: black;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+
+  width: 50%;
+  line-height: 2;
+  padding: 6px 10px;
+}
+
+.barraPesquisa::placeholder{
+  color: white;
+  opacity: 0.8;
 }
 
 .listaEspecies {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 5vh;
 }
 
 .listaEspecies button{
@@ -32,41 +52,59 @@
 .modalConteudo{
   position: relative;
 
-  width: 500px;
-  padding: 30px;
+  width: 50vw;
+  height: auto;
+  max-height: 80vh;
+
+  padding: 5vh;
 
   background: black;
   border: 2px solid #00ff88;
-  color: #00ff88;
   font-family: monospace;
+  color: #00ff88;
+
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.modalConteudo::-webkit-scrollbar{
+  width: 8px;
+}
+
+.modalConteudo::-webkit-scrollbar-thumb{
+  background: #00ff88;
 }
 
 .fechar{
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
 
-  background: none;
-  border: 1px solid #00ff88;
+
+
+  border: 2px solid #00ff88;
   color: #00ff88;
-  font-size: 20px;
+  font-size: 1rem;
   cursor: pointer;
 }
 
 .dinoHeader{
-  font-size: 32px;
+  font-size: 5vh;
   text-align: center;
-  margin-bottom: 20px;
+  margin: 2vh 0;
 }
 
 .dinoImagem{
-  border: 1px solid #00ff88;
-  max-width: 200px;
-  margin-top: 10px;
+  border: 2px solid #00ff88;
+  width: 20vw;
+  height: auto;
 }
 
 .dinoInfo{
-  font-size: 16px;
+  font-size: 2.5vh;
   text-align: left;
-  line-height: 1.6;
+  max-width: 70ch;
+  line-height: 2;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }

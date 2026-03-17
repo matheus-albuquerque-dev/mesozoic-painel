@@ -1,15 +1,31 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import "../styles/Dinopedia.css"
 
 export default function Dinopedia() {
   const [dinossauros, setDinossauros] = useState([])
+  const [busca, setBusca] = useState("")
   const [selecionado, setSelecionado] = useState(null)
 
+  const dinosFiltrados = useMemo(() => { //useMemo evita recalcular tudo toda vez, otimizando performance
+    return dinossauros
+      .filter(dino =>
+        (dino.nome || "").toLowerCase().includes(busca.toLowerCase())
+      )
+      .sort((a,b) => a.nome.localeCompare(b.nome, "pt"))
+  }, [dinossauros, busca])
+
   useEffect(() => {
-    fetch("http://localhost:3000/dinos")
-      .then(res => res.json())
-      .then(data => setDinossauros(data))
-      .catch(err => console.error("Erro:", err))
+    async function carregarDinos(){
+      try{
+        const res = await fetch("http://localhost:3000/dinos")
+        const data = await res.json()
+        setDinossauros(data)
+      } catch(err){
+        console.error("Erro:", err)
+      }
+    }
+
+    carregarDinos()
   }, [])
 
   return (
@@ -17,8 +33,15 @@ export default function Dinopedia() {
 
         <h2>Catálogo de Espécies</h2>
 
+        <input className="barraPesquisa"
+          type="text"
+          placeholder="Insira a espécie para buscar"
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+        />
+
         <div className="listaEspecies">
-          {dinossauros.map(dino => (
+          {dinosFiltrados.map(dino => (
             <button
               key={dino.id}
               onClick={() => setSelecionado(dino)}
@@ -27,16 +50,12 @@ export default function Dinopedia() {
               {dino.nome}
             </button>
           ))}
-          </div>
+        </div>
 
 
       {selecionado && (
         <div className="modal">
-          <div
-            className="modalConteudo"
-            onClick={(e) => e.stopPropagation()}
-          >
-
+          <div className="modalConteudo">
             <button
               className="fechar"
               onClick={() => setSelecionado(null)}
