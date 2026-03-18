@@ -1,35 +1,20 @@
 [
   {
-    "id": 1,
     "nome": "Tyrannosaurus Rex",
-    "periodo": "Cretáceo",
+    "periodo": "Cretáceo Superior",
     "dieta": "Carnívoro",
-    "tamanho": "Dinossauros foram um grupo de répteis dominantes superpalavragigantesemespacosquequebraolayout durante o período",
-    "descricao": 1234,
-    "imagem": "/assets/imgs/dinopedia/trex.jpg"
+    "tamanho": "12.5",
+    "descricao": "DESCRICAO",
+    "imagem": "/assets/imgs/Dinopedia/tyrannosaurus_rex.png",
+    "id": 1
   },
   {
-    "id": 2,
-    "nome": "Trike",
-    "periodo": "Cretáceo",
-    "dieta": "Herbívoro",
-    "tamanho": "x metros",
-    "descricao": 1234
-  },
-  {
-    "id": 3,
-    "nome": "Raptor",
-    "periodo": "Cretáceo",
+    "nome": "Velociraptor Mongoliensis",
+    "periodo": "Cretáceo Superior",
     "dieta": "Carnívoro",
-    "tamanho": "y metros",
-    "descricao": 1234
-  },
-  {
-    "id": 4,
-    "nome": "Stego",
-    "periodo": "Jurássico",
-    "dieta": "Herbívoro",
-    "tamanho": "z metros",
-    "descricao": 1234
+    "tamanho": "1.7",
+    "descricao": "DESCRICAO",
+    "imagem": "/assets/imgs/Dinopedia/velociraptor_mongoliensis.png",
+    "id": 2
   }
 ]

@@ -18,6 +18,10 @@
   gap: 1vh;
 }
 
+.catalogo button{
+  font-size: 2vh;
+}
+
 .barraPesquisa{
   font-size:1rem;
 
@@ -159,4 +163,9 @@
   line-height: 2;
   overflow-wrap: anywhere;
   word-break: break-all;
+}
+
+.botaoDelEspecie{
+  font-size: 2rem;
+  cursor: 'pointer';
 }

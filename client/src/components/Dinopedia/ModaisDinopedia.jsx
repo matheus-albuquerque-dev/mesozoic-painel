@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 //MODAL INFORMATIVO DE ESPECIES
-export function ModalInfos({ selecionado, fechar }) {
+export function ModalInfos({ selecionado, fechar, delEspecie }) {
   if (!selecionado) return null
 
   return (
@@ -28,6 +28,14 @@ export function ModalInfos({ selecionado, fechar }) {
           <p><strong>Dieta:</strong> {selecionado.dieta}</p>
           <p><strong>Tamanho:</strong> {selecionado.tamanho}</p>
           <p><strong>Descrição:</strong> {selecionado.descricao}</p>
+
+          <button 
+            className="botaoDelEspecie" 
+            onClick={() => delEspecie(selecionado.nome)}
+            
+          >
+            Excluir Espécie
+          </button>
         </div>
       </div>
     </div>
@@ -35,7 +43,7 @@ export function ModalInfos({ selecionado, fechar }) {
 }
 
 //MODAL ADITIVO DE ESPECIES
-export function ModalAddEspecies({ aberto, fechar, especieAdicionada }) {
+export function ModalAddEspecies({ aberto, fechar, addEspecie }){
   const [nome, setNome] = useState("")
   const [periodo, setPeriodo] = useState("")
   const [dieta, setDieta] = useState("")
@@ -56,7 +64,6 @@ export function ModalAddEspecies({ aberto, fechar, especieAdicionada }) {
         !descricao.trim() ||
         !imagem.trim()
     ) {
-        alert("Todos os campos devem ser preenchidos.")
         return
     }
 
@@ -69,7 +76,7 @@ export function ModalAddEspecies({ aberto, fechar, especieAdicionada }) {
       imagem
     }
 
-    await especieAdicionada(novoDino)
+    await addEspecie(novoDino)
 
     //limpeza do formulario
     setNome("")
@@ -136,11 +143,11 @@ export function ModalAddEspecies({ aberto, fechar, especieAdicionada }) {
             onChange={(e) => setImagem(e.target.value)}
           />
 
-          <button type="submit" onClick={fechar}>
+          <button type="submit">
             Salvar
           </button>
         </form>
-      </div>
+      </div>  
     </div>
   )
 }
