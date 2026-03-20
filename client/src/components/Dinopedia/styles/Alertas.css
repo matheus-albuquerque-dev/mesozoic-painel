@@ -1,0 +1,36 @@
+/*ALERTAS PARA MODIFICAÇÃO DE ESPÉCIES*/
+.alertaPopup{
+  background-color: black !important;
+  border: 2px solid #00ff88 !important;
+  border-radius: 0 !important;
+  font-family: monospace !important;
+}
+
+.alertaTitulo{
+  color: #00ff88 !important;
+  font-size: 1.5rem !important;
+}
+
+.alertaConteudo{
+  color: white !important;
+  font-size: 1rem !important;
+}
+
+/*BOTÕES DE CONFIRMAR / NEGAR*/
+.alertaBotao{
+  background-color: transparent !important;
+  border: 1px solid #00ff88 !important;
+  color: #00ff88 !important;
+  border-radius: 0 !important;
+  font-family: monospace !important;
+}
+
+.alertaBotao:hover{
+  background-color: #007e06 !important;
+}
+
+.swal2-actions, 
+.alertaBotao {
+  transition: none !important;
+  transition-duration: 0s !important;
+}

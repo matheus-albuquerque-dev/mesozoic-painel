@@ -21,6 +21,21 @@ body {
   gap: 15px;
 }
 
+.headerSidebar{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  font-size: 1.5rem;
+}
+.logo{
+  width: 30px;
+  height: 30px;
+  border: 1px solid #00ff88;
+  flex-shrink: 0;
+}
+
 button {
   background: transparent;
   border: 1px solid #00ff88;

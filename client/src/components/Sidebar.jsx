@@ -8,7 +8,10 @@ export default function Sidebar({ aba, setAba }) {
 
   return (
     <aside className="sidebar">
-
+      <div className="headerSidebar">
+        <img src="/assets/imgs/logo.png" className="logo" />
+        <p><strong>Mesozoic Painel</strong></p>
+      </div>
       {abas.map(abaEspecifica => (
         <button
           key={abaEspecifica.id}
