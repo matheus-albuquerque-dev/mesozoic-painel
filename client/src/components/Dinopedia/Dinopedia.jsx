@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react"
 
-import { ModalInfos, ModalAddEspecie } from "./ModaisDinopedia"
+import { ModalAddEspecie, ModalInfos, ModalEditEspecie } from "./ModaisDinopedia"
 
 import "./styles/Dinopedia.css"
 
@@ -8,7 +8,9 @@ export default function Dinopedia() {
   const [dinossauros, setDinossauros] = useState([])//serve para mostrar os dinossauros catalogados
   const [busca, setBusca] = useState("")//serve para pesquisar dinossauros na searchbar
   const [selecionado, setSelecionado] = useState(null)//serve para mostrar as informações da espécie selecionada, também servindo para excluí-la
-  const [adicaoAberta, setAdicaoAberta] = useState(false)//serve para abrir o modal de adição de espécie
+  const [addAberta, setAddAberta] = useState(false)//serve para abrir o modal de adição de espécie
+  const [dinoEditando, setDinoEditando] = useState(null)//diz qual dino está sendo editado
+  const [editAberta, setEditAberta] = useState(false)//serve para abrir o modal de edição de espécie
 
   
 
@@ -20,10 +22,10 @@ export default function Dinopedia() {
       .sort((a,b) => a.nome.localeCompare(b.nome, "pt"))
   }, [dinossauros, busca])
 
-  useEffect(() => {
+  useEffect(() =>{
     async function carregarDinos(){
       try{
-        const res = await fetch("http://localhost:3000/dinos")
+        const res = await fetch("http://localhost:3001/dinos")
         const data = await res.json()
         setDinossauros(data)
       } catch(err){
@@ -39,7 +41,7 @@ export default function Dinopedia() {
 
         <header className="headerCatalogo">
           <h2>Catálogo de Espécies</h2>
-          <button onClick={() => setAdicaoAberta(true)}>
+          <button onClick={() => setAddAberta(true)}>
             Adicionar
           </button>
         </header>
@@ -64,14 +66,29 @@ export default function Dinopedia() {
         </div>
 
       <ModalAddEspecie
-        aberto={adicaoAberta}
-        fechar={() => setAdicaoAberta(false)}
+        adicaoAberta={addAberta}
+        fechar={() => setAddAberta(false)}
         setDinossauros={setDinossauros}
       />
 
+      <ModalEditEspecie 
+        editAberta={editAberta} 
+        fechar={() => {
+          setEditAberta(false)
+          setDinoEditando(null)
+        }}
+        dino={dinoEditando} 
+        setDinossauros={setDinossauros} 
+      />
+
       <ModalInfos
-        selecionado={selecionado}
+        abrirEdit={() =>{
+          setDinoEditando(selecionado)
+          setEditAberta(true)
+          setSelecionado(null)
+        }}
         fechar={() => setSelecionado(null)}
+        selecionado={selecionado}
         setDinossauros={setDinossauros}
       />
     </div>

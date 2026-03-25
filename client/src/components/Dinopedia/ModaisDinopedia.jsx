@@ -1,4 +1,4 @@
-import { useState, useRef } from "react" //(useRef) SELEÇÃO DE IMAGEM, DEVE SER RETIRADO NO ELECTRON
+import { useState, useRef, useEffect } from "react" //(useRef) SELEÇÃO DE IMAGEM, DEVE SER RETIRADO NO ELECTRON
 import Swal from 'sweetalert2'
 import "./styles/Alertas.css"
 
@@ -31,9 +31,9 @@ const alerta = Swal.mixin({
 })
 
 //FUNÇÃO DE ADIÇÃO
-const addEspecie = async (novoDino, setDinossauros, fechar) =>{
+const addEspecie = async (novoDino, fechar, setDinossauros) =>{
     try {
-      const res = await fetch("http://localhost:3000/dinos",{
+      const res = await fetch("http://localhost:3001/dinos",{
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -44,7 +44,7 @@ const addEspecie = async (novoDino, setDinossauros, fechar) =>{
       const data = await res.json()
 
       if (!res.ok){//response fora de [200-299]
-        throw new Error(data.message || "Erro desconhecido no servidor") //captura de erro ou mensagem genérica
+        throw new Error(data.error || "Erro desconhecido.")//captura de erro ou mensagem genérica
       }
 
       fechar()
@@ -68,8 +68,43 @@ const addEspecie = async (novoDino, setDinossauros, fechar) =>{
     }
   }
 
+//FUNÇÃO DE EDIÇÃO
+const editEspecie = async (novasInfos, id, fechar, setDinossauros) =>{
+      try {
+        const res = await fetch(`http://localhost:3001/dinos/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(novasInfos)
+        })
+
+        const data = await res.json()
+
+        if (!res.ok){//response fora de [200-299]
+          throw new Error(data.error || "Erro desconhecido.")//captura de erro ou mensagem genérica
+        }
+
+        setDinossauros(prev => prev.map(dino => dino.id === id ? data : dino))//atualização da lista, caso mexa no nome
+
+        alerta.fire({
+          title: 'Operação bem-sucedida.',
+          text: 'Informações da espécie editadas.',
+          showConfirmButton: true,
+          confirmButtonText: 'Fechar'
+        })
+        fechar()
+
+      } catch (err){
+        alerta.fire({
+          title: 'Operação malsucedida.',
+          text: err.message,
+          showConfirmButton: true,
+          confirmButtonText: 'Fechar'
+        })
+      }
+}
+
 //FUNÇÃO DE EXCLUSÃO
-const delEspecie = async (nome, fechar, setDinossauros) =>{
+const delEspecie = async (id, nome, fechar, setDinossauros) =>{
     const resultado = await alerta.fire({
       title: 'Exclusão solicitada.',
       text: `Deseja remover ${nome} da Dinopédia?`,
@@ -79,18 +114,19 @@ const delEspecie = async (nome, fechar, setDinossauros) =>{
     })
 
     if (resultado.isConfirmed) {
-      try {
-        const res = await fetch(`http://localhost:3000/dinos/${nome}`, {
+      try{
+        const res = await fetch(`http://localhost:3001/dinos/${id}`, {
           method: "DELETE",
         })
 
         if (!res.ok){//response fora de [200-299]
-          throw new Error(data.message || "Erro desconhecido no servidor")//captura de erro ou mensagem genérica
+          const errorData = await res.json()
+          throw new Error(errorData.error || "Erro desconhecido.")//captura de erro ou mensagem genérica
         }
 
         //alerta o useMemo
-        setDinossauros(prev => prev.filter(dino => dino.nome !== nome))
-          
+        setDinossauros(prev => prev.filter(dino => dino.id !== id))
+
         alerta.fire({
           title: 'Operação bem-sucedida.',
           text: 'Espécie excluída da Dinopédia.',
@@ -107,11 +143,11 @@ const delEspecie = async (nome, fechar, setDinossauros) =>{
           confirmButtonText: 'Fechar'
         })
       }
-    }
   }
+}
 
 //MODAL ADITIVO DE ESPÉCIES
-export function ModalAddEspecie({ aberto, fechar, setDinossauros }){
+export function ModalAddEspecie({adicaoAberta, fechar, setDinossauros}){
   const [nome, setNome] = useState("")
   const [periodo, setPeriodo] = useState("")
   const [dieta, setDieta] = useState("")
@@ -122,7 +158,7 @@ export function ModalAddEspecie({ aberto, fechar, setDinossauros }){
   //REFERÊNCIA PARA SELEÇÃO DE IMAGEM, DEVE SER RETIRADA NO ELECTRON
   const arquivoRef = useRef(null)
 
-  if (!aberto) return null
+  if (!adicaoAberta) return null
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -147,7 +183,7 @@ export function ModalAddEspecie({ aberto, fechar, setDinossauros }){
       imagem
     }
 
-    await addEspecie(novoDino, setDinossauros, fechar)
+    await addEspecie(novoDino, fechar, setDinossauros)
 
     //limpeza do formulario
     setNome("")
@@ -159,9 +195,7 @@ export function ModalAddEspecie({ aberto, fechar, setDinossauros }){
   }
 
   //LÓGICA DA SELEÇÃO DE IMAGEM, DEVE SER RETIRADA NO ELECTRON
-  const handleBotaoClique = () =>{
-    arquivoRef.current.click()//botão bonito "cobre" o feio, e chama o feio quando clicado
-  }
+  const handleBotaoClique = () => arquivoRef.current.click()//botão bonito "cobre" o feio, e chama o feio quando clicado
 
   const escolhaDoArquivo = (e) => {
     const arquivo = e.target.files[0]//pega só o primeiro
@@ -179,49 +213,14 @@ export function ModalAddEspecie({ aberto, fechar, setDinossauros }){
 
         <form onSubmit={handleSubmit} className="formularioAddDino">
           <h2>Adicionar Dinossauro</h2>
-          <input
-            type="text"
-            placeholder="Insira o NOME da espécie"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-
-          <input
-            type="text"
-            placeholder="Insira o PERÍODO da espécie"
-            value={periodo}
-            onChange={(e) => setPeriodo(e.target.value)}
-          />
-
-          <input
-            type="text"
-            placeholder="Insira a DIETA da espécie"
-            value={dieta}
-            onChange={(e) => setDieta(e.target.value)}
-          />
-
-          <input
-            type="text"
-            placeholder="Insira o TAMANHO da espécie"
-            value={tamanho}
-            onChange={(e) => setTamanho(e.target.value)}
-          />
-
-          <input
-            type="text"
-            placeholder="Insira a DESCRIÇÃO da espécie"
-            value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
-          />
+          <input type="text" placeholder="Insira o NOME da espécie" value={nome} onChange={(e) => setNome(e.target.value)}/>
+          <input type="text" placeholder="Insira o PERÍODO da espécie" value={periodo} onChange={(e) => setPeriodo(e.target.value)}/>
+          <input type="text" placeholder="Insira a DIETA da espécie" value={dieta} onChange={(e) => setDieta(e.target.value)}/>
+          <input type="text" placeholder="Insira o TAMANHO da espécie" value={tamanho} onChange={(e) => setTamanho(e.target.value)}/>
+          <input type="text" placeholder="Insira a DESCRIÇÃO da espécie" value={descricao} onChange={(e) => setDescricao(e.target.value)}/>
 
           <div className="selecaoImagem">
-            <input 
-              type="file" 
-              ref={arquivoRef} 
-              onChange={escolhaDoArquivo} 
-              style={{display: 'none'}}//esconde feiura
-              accept="image/*" 
-            />
+            <input type="file" ref={arquivoRef}  onChange={escolhaDoArquivo} style={{display: 'none'}}/*esconde feiura*/ accept="image/*"/>
             <button type="button" onClick={handleBotaoClique}>
               Selecione a imagem
             </button>
@@ -237,10 +236,77 @@ export function ModalAddEspecie({ aberto, fechar, setDinossauros }){
   )
 }
 
+//MODAL EDITIVO DE ESPÉCIES
+export function ModalEditEspecie({editAberta, fechar, dino, setDinossauros}){
+  const [nome, setNome] = useState("")
+  const [periodo, setPeriodo] = useState("")
+  const [dieta, setDieta] = useState("")
+  const [tamanho, setTamanho] = useState("")
+  const [descricao, setDescricao] = useState("")
+  const [imagem, setImagem] = useState("")
 
+  const arquivoRef = useRef(null)
+
+  //autopreenchimento
+  useEffect(() =>{
+    if (editAberta && dino){
+      setNome(dino.nome || "")
+      setPeriodo(dino.periodo || "")
+      setDieta(dino.dieta || "")
+      setTamanho(dino.tamanho || "")
+      setDescricao(dino.descricao || "")
+      setImagem(dino.imagem || "")
+    }
+  }, [editAberta, dino])
+
+  if (!editAberta || !dino) return null
+
+  const handleSubmit = async (e) =>{
+    e.preventDefault()
+
+    const infosEditadas = {nome, periodo, dieta, tamanho, descricao, imagem}
+
+    await editEspecie(infosEditadas, dino.id, fechar, setDinossauros)
+  }
+
+  const handleBotaoClique = () => arquivoRef.current.click()
+
+  const escolhaDoArquivo = (e) => {
+    const arquivo = e.target.files[0]
+    if (arquivo) {
+      setImagem(`/assets/imgs/Dinopedia/${arquivo.name}`)
+    }
+  }
+
+  return (
+    <div className="modal">
+      <div className="modalAddEspecie" onClick={(e) => e.stopPropagation()}>
+        <button className="fechar" onClick={fechar}>✕</button>
+
+        <form onSubmit={handleSubmit} className="formularioAddDino">
+          <h2>Editando {dino.nome}</h2>
+          
+          <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome" />
+          <input type="text" value={periodo} onChange={(e) => setPeriodo(e.target.value)} placeholder="Período" />
+          <input type="text" value={dieta} onChange={(e) => setDieta(e.target.value)} placeholder="Dieta" />
+          <input type="text" value={tamanho} onChange={(e) => setTamanho(e.target.value)} placeholder="Tamanho" />
+          <textarea value={descricao} onChange={(e) => setDescricao(e.target.value)} placeholder="Descrição" />
+
+          <div className="selecaoImagem">
+            <input type="file" ref={arquivoRef} onChange={escolhaDoArquivo} style={{ display: 'none' }} accept="image/*" />
+            <button type="button" onClick={handleBotaoClique}>Alterar Imagem</button>
+            <p>{imagem || "Imagem não selecionada."}</p>
+          </div>
+
+          <button type="submit">Salvar Alterações</button>
+        </form>
+      </div>
+    </div>
+  )
+}
 
 //MODAL INFORMATIVO DE ESPÉCIES
-export function ModalInfos({ selecionado, fechar, setDinossauros }){
+export function ModalInfos({abrirEdit, fechar, selecionado, setDinossauros}){
   if (!selecionado) return null
 
   return(
@@ -248,6 +314,10 @@ export function ModalInfos({ selecionado, fechar, setDinossauros }){
       <div className="modalInfos" onClick={(e) => e.stopPropagation()}>
         <button className="fechar" onClick={fechar}>
           ✕
+        </button>
+
+        <button onClick={() => abrirEdit()}>
+          Editar
         </button>
 
         <div className="dinoHeader">
@@ -269,7 +339,7 @@ export function ModalInfos({ selecionado, fechar, setDinossauros }){
         <div className="containerBotaoDelEspecie">
           <button 
               className="botaoDelEspecie" 
-              onClick={() => delEspecie(selecionado.nome, fechar, setDinossauros)}
+              onClick={() => delEspecie(selecionado.id, selecionado.nome, fechar, setDinossauros)}
               
             >
               Excluir Espécie

@@ -1,79 +1,104 @@
-const express = require("express")
-const cors = require("cors")
-const fs = require("fs")
+const express = require('express')
+const PORT = 3001
+const { Pool } = require('pg')
+const cors = require('cors')
+require('dotenv').config()
 
-const app = express() //inicizalizando servidor express
-const PORT = 3000 //porta utilizada
-app.use(cors()) //ativa cors
-app.use(express.json()) //servidor entender json
+const app = express()
+app.use(cors())
+app.use(express.json())
 
-//Códigos de Status HTTP:
-//status(201) - "Created"
-//status(404) - "Not Found"
-//status(500) - "Internal Server Error"
-
-app.get("/dinos", (_, res) => {
-  fs.readFile("dinos.json", "utf8", (err, data) => {
-    if (err) {
-      return res.status(500).json({erro: "Erro ao ler arquivo"})
-    }
-
-    res.json(JSON.parse(data)) //parse transforma texto em objetos para o js entender, res envia
-  })
+//reutlização da conexão
+const pool = new Pool({
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_DATABASE,
 })
 
-app.post("/dinos", (req, res) => {
-  const novoDino = req.body //dados enviados pelo usuário
-
-  fs.readFile("dinos.json", "utf8", (err, data) => {
-    if (err) {
-      return res.status(500).json({erro: "Erro ao ler arquivo"})
-    }
-    
-    const dinos = JSON.parse(data)//parse para manipular
-
-    novoDino.id = dinos.length > 0 ? Math.max(...dinos.map(d => d.id)) + 1 : 1;
-
-    dinos.push(novoDino)
-
-    fs.writeFile("dinos.json", JSON.stringify(dinos, null, 2), (err) => {//retransforma objetos em texto e reescreve arquivo
-      if (err) {
-        return res.status(500).json({erro: "Erro ao salvar arquivo"})
-      }
-
-      res.status(201).json(novoDino)
-    })
-  })
+app.get('/dinos', async (_, res) =>{
+  try{
+    const {rows} = await pool.query('SELECT * FROM especies ORDER BY id DESC')
+    res.status(200).json(rows)
+  } catch (err){
+    res.status(500).json({error: "Erro interno."})
+  }
 })
 
-app.delete("/dinos/:nome", (req, res) => {
-  const nome = req.params.nome//captura nome
+app.post('/dinos', async (req, res) =>{
+  const {nome, periodo, dieta, tamanho, descricao, imagem} = req.body
+  try{
 
-  fs.readFile("dinos.json", "utf8", (err, data) => {//abre arquivo
-    if (err) {
-      return res.status(500).json({erro: "Erro ao ler arquivo"})
-    }
+    const query = 'INSERT INTO especies (nome, periodo, dieta, tamanho, descricao, imagem) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *'
+    const values = [nome, periodo, dieta, tamanho, descricao, imagem]
+    const {rows} = await pool.query(query, values)
 
-    const dinos = JSON.parse(data) //"objetifica"
+    res.status(201).json(rows[0])
 
-    const existe = dinos.some(d => d.nome === nome) //procura objeto com mesmo nome
-
-    if (!existe) {
-      return res.status(404).json({erro: "Dinossauro não encontrado"})
-    }
-
-    const dinosRestantes = dinos.filter(d => d.nome !== nome) //todos menos o do nome
-
-    fs.writeFile("dinos.json", JSON.stringify(dinosRestantes, null, 2), (err) => {
-      if (err) {
-        return res.status(500).json({erro: "Erro ao salvar arquivo"})
-      }
-
-      res.json({mensagem: "Dinossauro removido com sucesso"})
-    })
-  })
+  } catch (err){
+    res.status(500).json({error: "Erro interno."})
+  }
 })
 
-app.listen(PORT, () => {
-  console.log(`Servidor ativo: http://localhost:${PORT}`)
+app.patch('/dinos/:id', async (req, res) =>{
+  const {id} = req.params
+  const fields = req.body
+
+  try{
+
+    if (Object.keys(fields).length === 0){
+      return res.status(400).json({error: "Preencha algum campo para atualizar."})
+    }
+
+    const setClauses = []
+    const values = []
+
+    let index = 1
+
+    for (const key in fields){
+      setClauses.push(`${key} = $${index}`)
+      values.push(fields[key])
+      index++
+    }
+
+    values.push(id)//põe id no final
+
+    const query = `
+      UPDATE especies
+      SET ${setClauses.join(', ')}
+      WHERE id = $${index}
+      RETURNING *
+    `;
+    //WHERE id {index} -> "onde o id for o igual ao último value('fisgado pelo index'), ou seja, o próprio id"
+    const {rows} = await pool.query(query, values)
+
+    if (rows.length === 0){
+      return res.status(404).send('Espécie não encontrada.')
+    }
+
+    res.status(200).json(rows[0])
+
+  } catch (err){
+    res.status(500).json({error: "Erro interno."})
+  }
 })
+
+app.delete('/dinos/:id', async (req, res) =>{
+  const {id} = req.params
+  try{
+
+    const {rows} = await pool.query('DELETE FROM especies WHERE id = $1 RETURNING *', [id])
+
+    if (rows.length === 0){ //id não encontrado
+      return res.status(404).send('Espécie não encontrada.')
+    }
+
+    res.status(200).json(rows[0])
+
+  } catch (err){
+    res.status(500).json({error: "Erro interno."})
+  }
+})
+
+app.listen(PORT, () => {console.log(`Servidor rodando, Dinopedia ON.`)})
