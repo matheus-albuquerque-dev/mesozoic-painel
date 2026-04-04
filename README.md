@@ -24,30 +24,31 @@ Este é um projeto **Full Stack pessoal** desenvolvido para consolidar conhecime
 * node-postgres (pg): Driver utilizado para conectar o servidor ao banco, permitindo a execução de comandos SQL dinâmicos (como atualizações parciais e totais via PATCH).
 
 ## 🛠️ Funcionalidades
-✅ Concluído | 🟦 Em desenvolvimento | ⬜ Planejado
+* ✅ Concluído | 🟦 Em desenvolvimento | ⬜ Planejado
 
-✅ Loading Screen --> Exibida por simulação de latência;
+* ✅ Loading Screen --> Exibida por simulação de latência;
 
-✅ Efeitos Sonoros --> Implementação de áudios globais para imersão na interface;
+* ✅ Efeitos Sonoros --> Implementação de áudios globais para imersão na interface;
 
-✅ Sidebar Dinâmica --> Menu responsivo com rotas de navegação;
+* ✅ Sidebar Dinâmica --> Menu responsivo com rotas de navegação;
 
-✅ Modelagem e Persistência de Dados --> Estruturação de banco de dados relacional (PostgreSQL) para catálogo e sequenciamento genético;
+* ✅ Modelagem e Persistência de Dados --> Estruturação de banco de dados relacional (PostgreSQL) para catálogo e sequenciamento genético;
 
-✅ Integridade de Dados --> Sistema de unicidade de registros (Unique Keys) para nomes de espécies e genes;
+* ✅ Integridade de Dados --> Sistema de unicidade de registros (Unique Keys) para nomes de espécies e genes;
 
-✅ PATCH Dinâmico --> Atualizações parciais de dados otimizadas no servidor;
+* ✅ PATCH Dinâmico --> Atualizações parciais de dados otimizadas no servidor;
 
+---
 
-✅ Sequenciador de **Genes**: CRUD de cadeias genéticas com validação de bases nitrogenadas (ATCG) e visualização dinâmica;
+* ✅ Sequenciador de **Genes**: CRUD de cadeias genéticas com validação de bases nitrogenadas (ATCG) e visualização dinâmica;
 
-✅ **Dinopédia**: CRUD completo de espécies com persistência e validação em banco de dados SQL;
+* ✅ **Dinopédia**: CRUD completo de espécies com persistência e validação em banco de dados SQL;
 
-⬜ Monitoramento de **Recintos**: Integração informacional entre espécimes e habitats;
+* ⬜ Monitoramento de **Recintos**: Integração informacional entre espécimes e habitats;
 
-⬜ Sistema de **Câmeras**: Interface de visualização simulada para cada recinto;
+* ⬜ Sistema de **Câmeras**: Interface de visualização simulada para cada recinto;
 
-⬜ **Mapa** de Infraestrutura: Visualização geográfica responsiva, interativa e informacional.
+* ⬜ **Mapa** de Infraestrutura: Visualização geográfica responsiva, interativa e informacional.
 
 ## 🎥 Demonstração
 ![Demonstração do Mesozoic Painel](./client/public/assets/demo.gif)
