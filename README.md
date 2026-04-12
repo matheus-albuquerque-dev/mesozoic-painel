@@ -1,5 +1,5 @@
 # ⚠️ Status do Projeto: Em Pausa Temporária
-> Este projeto se encontra em pausa temporária devido a [problemas técnicos de hardware / foco em outro projeto (GameDev]. Sinta-se à vontade para explorar o código.
+> Este projeto se encontra em pausa temporária devido a **problemas técnicos de hardware / foco em outro projeto (GameDev)**. Sinta-se à vontade para explorar o código.
 
 # 🦖 Mesozoic Painel - Full Stack Personal Project
 > Painel interativo de **controle biotecnológico e administração de parques mesozoicos retrô**.
