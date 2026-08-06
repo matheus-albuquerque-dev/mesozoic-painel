@@ -44,6 +44,7 @@ app.post('/especies', async (req, res) =>{
   }
 })
 
+//PATCH DINOPEDIA====================================================================================================
 app.patch('/especies/:id', async (req, res) =>{
   const {id} = req.params
   const fields = req.body
@@ -83,6 +84,7 @@ app.patch('/especies/:id', async (req, res) =>{
   }
 })
 
+//PATCH GENES======================================================================================================
 app.patch('/especies/:id', async (req, res) =>{
   const {id} = req.params
   const fields = req.body
@@ -146,18 +148,96 @@ app.patch('/especies/:id', async (req, res) =>{
 
 app.delete('/especies/:id', async (req, res) =>{
   const {id} = req.params
+
   try{
+    const {rows} = await pool.query('DELETE FROM especies WHERE id = $1 RETURNING id', [id])
 
-    const {rows} = await pool.query('DELETE FROM especies WHERE id = $1 RETURNING *', [id])
-
-    if (rows.length === 0){ //id não encontrado
-      return res.status(404).send('Espécie não encontrada.')
+    if (rows.length === 0){
+      return res.status(404).json({error: 'Espécie não encontrada.'})
     }
 
-    res.status(200).json(rows[0])
+    return res.status(200).json({message: 'Espécie excluída com sucesso.'})
 
+  }catch (err){
+    console.error('Erro ao deletar espécie:', err)
+    return res.status(500).json({error: 'Erro interno durante exclusão de espécie.'})
+  }
+})
+
+//RECINTOS==========================================================================================================
+//retorna so colunas para preview de cada linha
+app.get("/recintos/preview", async (req, res) =>{
+  try{
+    const query = `
+      SELECT 
+        rec.id,
+        rec.nome,
+        rec.img_miniatura,
+        rec.em_manutencao,
+        COALESCE(
+          json_agg(esp.nome) FILTER (WHERE esp.nome IS NOT NULL), 
+          '[]'
+        ) AS especies
+      FROM recintos rec
+      LEFT JOIN recinto_especies recesp ON rec.id = recesp.recinto_id
+      LEFT JOIN especies esp ON recesp.especie_id = esp.id
+      GROUP BY rec.id;
+    `
+
+    const result = await pool.query(query)
+    res.json(result.rows)
   } catch (err){
-    res.status(500).json({error: "Erro interno."})
+    console.error(err)
+    res.status(500).json({error: "Erro ao buscar preview dos recintos."})
+  }
+})
+
+//retorna os detalhes de um recinto especifico
+app.get('/recintos/:id', async (req, res) =>{
+  try{
+    const {id} = req.params
+    const query = `
+      SELECT 
+        rec.*,
+        COALESCE(
+          json_agg(esp.nome) FILTER (WHERE esp.nome IS NOT NULL), 
+          '[]'
+        ) AS especies
+      FROM recintos rec
+      LEFT JOIN recinto_especies recesp ON rec.id = recesp.recinto_id
+      LEFT JOIN especies esp ON recesp.especie_id = esp.id
+      WHERE rec.id = $1
+      GROUP BY rec.id;
+    `
+
+    const result = await pool.query(query, [id])
+    if (result.rows.length === 0){
+      return res.status(404).json({message: "Recinto não encontrado."})
+    }
+
+    res.json(result.rows[0])
+  } catch (err){
+    console.error(err)
+    res.status(500).json({error: "Erro ao buscar detalhes deste recinto."})
+  }
+})
+
+//rota pra deleter recinto por id
+app.delete('/recintos/:id', async (req, res) =>{
+  const {id} = req.params
+
+  try{
+    const {rows} = await pool.query('DELETE FROM recintos WHERE id = $1 RETURNING *', [id])
+
+    if (rows.length === 0){
+      return res.status(404).json({ error: 'Recinto não encontrado.' })
+    }
+
+    return res.status(200).json({message: 'Recinto excluído com sucesso.'})
+
+  }catch (err){
+    console.error('Erro ao deletar recinto:', err)
+    return res.status(500).json({error: 'Erro interno durante exclusão de recinto.'})
   }
 })
 

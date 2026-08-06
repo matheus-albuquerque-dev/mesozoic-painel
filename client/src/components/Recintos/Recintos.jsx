@@ -1,61 +1,86 @@
-import {useState, useEffect, useMemo} from "react"
+import {useState, useEffect} from "react"
+import {recintosService} from "./recintosService"
+import ModalDetalhesRecinto from "./Modais/ModalDetalhesRecinto"
+
+import "./styles/RecintosPreviews.css"
 
 export default function Recintos(){
+  const [recintos, setRecintos] = useState([])
   const [selecionado, setSelecionado] = useState(null)
   const [modal, setModal] = useState(null)
-  const MODAIS ={
-    ADD: "add",
-    EDIT: "edit",
-    INFOS: "infos"
+
+  const MODAIS = {ADD: "add", 
+                  EDIT: "edit", 
+                  INFOS: "infos"}
+
+  //exibicao automatica das previews
+  useEffect(() =>{
+    const carregarPreviews = async () =>{
+      const dadosPreviews = await recintosService.getPreviews()
+      setRecintos(dadosPreviews)
+    }
+    carregarPreviews()
+  }, [])
+
+  //ao clicar em Detalhes de um recinto especifico
+  const abrirDetalhes = async (id) =>{
+    const detalhesRecSelecionado = await recintosService.getDetalhes(id)
+    setSelecionado(detalhesRecSelecionado)
+    setModal(MODAIS.INFOS)
   }
 
   return(
     <div className="recintos">
-          <h1>Recintos</h1>
+      <header>
+        <h1 id="header">Lista de Recintos</h1>
+      </header>
 
-          <button onClick={() => setModal(MODAIS.ADD)}>
-            Adicionar
-          </button>
+      <div className="catalogoRecintos">
+        {Array.isArray(recintos) && recintos.map((recinto) =>(
+          <div key={recinto.id} className="cardRecinto">
 
-        <div className="listaRecintos">
-          {recintosListados.map(recinto => (
-              <div className="disposicaoRecinto">
-                Recintos {recinto.nome}
-                <div className="previewRecinto">
-                  {recinto.imagem ? <img src={recinto.imagem} alt={recinto.nome} /> : "Imagem indisponível."}
-                  <div className="previewRecintoRight">
-                    <div className="infosPreviewRecinto">
-                      <p><strong>Estado:</strong> {recinto.estado ? recinto.estado : "Estado não informado."}</p>
-                      <p><strong>Espécies:</strong> {recinto.especies ? recinto.especies.join(", ") : "Sem espécies."}</p>
-                      <p><strong>Localização:</strong> {recinto.localizacao ? recinto.localizacao : "Localização não informada."}</p>
-                    </div>
-                    <button
-                      key={recinto.id}
-                      onClick={() =>{
-                        setSelecionado(recinto)
-                        setModal(MODAIS.INFOS)
-                      }}
-                      className={selecionado?.id === recinto.id ? "ativo" : ""}
-                    >
-                      Informações
-                    </button>
-                  </div>
-                </div>
+            <p className="nomeRecinto">{recinto.nome}</p>
+
+            <div className="conteinerHorizontalPreviews">
+
+              <div className="imgMiniatura">
+                <img src={recinto.img_miniatura} alt={recinto.nome} />
               </div>
-          ))}
+                <div className="ladoDireitoCard">
+                  <p className={`previewStatus ${recinto.em_manutencao ? "manutencao" : "operacional"}`}>
+                    <strong>Status:</strong>{" "}
+                    {recinto.em_manutencao ? "Em Manutenção" : "Operacional"}
+                  </p>
+                  <div className="previewEspecies">
+                    <strong>Espécies:</strong>
+                    <ul>
+                      {Array.isArray(recinto.especies) && recinto.especies.length > 0 ? (
+                        recinto.especies.map((esp, i) => <li key={i}>{esp}</li>)
+                      ) : (
+                        <li>Sem espécies registradas.</li>
+                      )}
+                    </ul>
+                  </div>
+                  <button className="btnDetalhes" onClick={() => abrirDetalhes(recinto.id)}>
+                    Detalhes
+                  </button>
+                </div>
+            </div>
+          </div>
+        ))}
+        <button id="btnAddRecinto" onClick={() => setModal(MODAIS.ADD)}>+</button>
+      </div>
 
-          {/*MODAIS*/}
-                {modal === MODAIS.ADD && <ModalAddRecinto/>}
-                
-                {modal === MODAIS.EDIT && <ModalEditRecinto/>}
-                
-                {modal === MODAIS.INFOS && <ModalInfosRecinto 
-                                            fechar={() =>{
-                                              setModal(null)
-                                              setSelecionado(null)
-                                            }}
-                                            />}
-        </div>
+      {modal === MODAIS.INFOS && selecionado && <ModalDetalhesRecinto 
+                                                abrirEdit={() =>{}}
+                                                fechar={() =>{
+                                                  setModal(null)
+                                                  setSelecionado(null)
+                                                }}
+                                                selecionado={selecionado}
+                                                setRecintos = {setRecintos}
+                                              />}
+
     </div>
   )
 }

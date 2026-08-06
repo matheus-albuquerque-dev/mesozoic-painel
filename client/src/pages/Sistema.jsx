@@ -3,7 +3,7 @@ import {useState, useEffect} from "react"
 import Sidebar from "../components/Sidebar"
 import Dinopedia from "../components/Dinopedia/Dinopedia"
 import Laboratorio from "../components/Genes/Laboratorio"
-//import Recintos from "../components/Recintos"
+import Recintos from "../components/Recintos/Recintos"
 //import Cameras from "../components/Cameras"
 
 import "../styles/Sistema.css"
@@ -37,7 +37,7 @@ export default function Sistema(){
       <div className="conteudo">
         {aba === "dinopedia" && <Dinopedia/>}
         {aba === "genes" && <Laboratorio/>}
-        {aba === "recintos" && <h1>Recintos</h1>}
+        {aba === "recintos" && <Recintos/>}
         {aba === "cameras" && <h1>Câmeras</h1>}
       </div>
     </div>

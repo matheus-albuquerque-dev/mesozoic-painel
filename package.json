@@ -1,4 +1,11 @@
 {
+  "name": "mesozoic-painel-raiz",
+  "private": true,
+  "scripts": {
+    "start:back": "npm --prefix ./server run dev",
+    "start:front": "npm --prefix ./client run dev",
+    "dev": "concurrently \"npm run start:back\" \"npm run start:front\""
+  },
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
@@ -7,5 +14,8 @@
     "pg": "^8.20.0",
     "react-toastify": "^11.0.5",
     "sweetalert2": "^11.26.23"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3"
   }
 }

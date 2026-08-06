@@ -1,0 +1,87 @@
+#header{
+    font-family: monospace;
+    font-size: 2rem;
+    color: white;
+}
+
+.catalogoRecintos{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.cardRecinto{
+  color: #00ff88;
+  border: 1px solid #00ff88;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nomeRecinto{
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+  color: white;
+  border-bottom: 2px solid #00ff88;
+  padding-bottom: 6px;
+}
+
+.conteinerHorizontalPreviews{
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.imgMiniatura img{
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+}
+
+.ladoDireitoCard{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.previewStatus.operacional{
+  color: #00e1ff;
+}
+
+.previewStatus.manutencao{
+  color: #ff0000;
+}
+
+.previewEspecies ul{
+  margin: 4px 0 0 0;
+  padding-left: 16px;
+  max-height: 56px;
+  overflow-y: auto;
+  font-size: 0.8rem;
+  list-style-type: square;
+}
+
+.previewEspecies ul::-webkit-scrollbar{
+  width: 4px;
+}
+
+.previewEspecies ul::-webkit-scrollbar-thumb{
+  background: #00ff88;
+}
+
+.btnDetalhes{
+    font-size: 1.25rem;
+    padding: 4px;
+}
+
+#btnAddRecinto{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  font-size: 4rem;
+}
