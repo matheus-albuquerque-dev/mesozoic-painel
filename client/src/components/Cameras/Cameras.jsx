@@ -5,7 +5,7 @@ import "./styles/Cameras.css"
 
 const API_URL = import.meta.env.VITE_API_URL
 
-export default function Cameras(){
+export default function Cameras({RecCamID, limparRecCamID, trocarAbaCamRec}){
   const [catalogoCameras, setCatalogoCameras] = useState([])
   const [recintoSelecionado, setRecintoSelecionado] = useState(null)
 
@@ -27,6 +27,19 @@ export default function Cameras(){
     }
     buscarCameras()
   }, [])
+
+  //verifica se veio da aba 'recintos' pelo 'RecCamID'
+  useEffect(() =>{
+    if (RecCamID && catalogoCameras.length > 0){
+      const recintoEncontrado = catalogoCameras.find(
+        (r) => String(r.recinto_id) === String(RecCamID) || String(r.id) === String(RecCamID)//fallback
+      )
+      if (recintoEncontrado){
+        abrirModalCam(recintoEncontrado)
+      }
+      limparRecCamID()
+    }
+  }, [RecCamID, catalogoCameras])
 
 const abrirModalCam = (recinto) =>{
   setRecintoSelecionado(recinto)
@@ -65,6 +78,7 @@ return(
                                                                   setRecintoSelecionado(null)
                                                                 }}
                                                                 recintoSelecionado={recintoSelecionado}
+                                                                trocarAbaCamRec = {trocarAbaCamRec}
                                                                 //setCatalogoCameras = {setCatalogoCameras}//pra tirar da render se excluir
                                                               />}
 

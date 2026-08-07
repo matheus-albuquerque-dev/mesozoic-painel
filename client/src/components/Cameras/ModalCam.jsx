@@ -1,9 +1,15 @@
 import {useState} from "react"
 import "./styles/ModalCam.css"
 
-export default function ModalCam({fechar, recintoSelecionado}){
+export default function ModalCam({fechar, recintoSelecionado, trocarAbaCamRec}){
     if (!recintoSelecionado || !recintoSelecionado.cameras || recintoSelecionado.cameras.length === 0) return null//seguranca
     const [camSelecionada, setcamSelecionada] = useState(recintoSelecionado.cameras[0])//inicializa com primeira cam
+
+    const handleVerSobre = ()=>{
+        fechar()
+        const id = recintoSelecionado.recinto_id || recintoSelecionado.id//fallback
+        trocarAbaCamRec(id)
+    }
 
     return(
         <div className="modalCamBg">
@@ -35,7 +41,7 @@ export default function ModalCam({fechar, recintoSelecionado}){
 
                         <h3 className="nomeCamSelecionada">{camSelecionada.nome}</h3>
 
-                        <button className="btnVerSobreRecinto">
+                        <button className="btnVerSobreRecinto" onClick={handleVerSobre}>
                             VER SOBRE {recintoSelecionado.recinto_nome}
                         </button>
                     </div>

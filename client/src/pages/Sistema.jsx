@@ -12,6 +12,19 @@ import audioGerenciador from "../utils/audioGerenciador"
 export default function Sistema(){
   const [aba, setAba] = useState(null)
 
+  //trocas de abas entre um recinto e suas cameras
+  const [RecCamID, setRecCamID] = useState(null)
+  const [CamRecID, setCamRecID] = useState(null)
+  const trocarAbaRecCam = (recintoId)=>{
+    setRecCamID(recintoId)
+    setAba("cameras")
+  }
+  const trocarAbaCamRec = (recintoId)=>{
+    setCamRecID(recintoId)
+    setAba("recintos")
+  }
+
+
   //SOM DE CLIQUE GLOBAL
   useEffect(() =>{
 
@@ -37,8 +50,16 @@ export default function Sistema(){
       <div className="conteudo">
         {aba === "dinopedia" && <Dinopedia/>}
         {aba === "genes" && <Laboratorio/>}
-        {aba === "recintos" && <Recintos/>}
-        {aba === "cameras" && <Cameras/>}
+        {aba === "recintos" && <Recintos
+                                CamRecID={CamRecID} 
+                                limparCamRecID={() => setCamRecID(null)}
+                                trocarAbaRecCam={trocarAbaRecCam}
+                                />}
+        {aba === "cameras" && <Cameras
+                              RecCamID={RecCamID}
+                              limparRecCamID={() => setRecCamID(null)}
+                              trocarAbaCamRec={trocarAbaCamRec}
+                              />}
       </div>
     </div>
   )

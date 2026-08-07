@@ -4,7 +4,7 @@ import ModalDetalhesRecinto from "./Modais/ModalDetalhesRecinto"
 
 import "./styles/RecintosPreviews.css"
 
-export default function Recintos(){
+export default function Recintos({CamRecID, limparCamRecID, trocarAbaRecCam}){
   const [recintos, setRecintos] = useState([])
   const [selecionado, setSelecionado] = useState(null)
   const [modal, setModal] = useState(null)
@@ -21,6 +21,14 @@ export default function Recintos(){
     }
     carregarPreviews()
   }, [])
+
+  //verifica se veio da aba 'cameras' pelo 'CamRecID'
+  useEffect(() =>{
+    if (CamRecID){
+      abrirDetalhes(CamRecID)
+      limparCamRecID()
+    }
+  }, [CamRecID])
 
   //ao clicar em Detalhes de um recinto especifico
   const abrirDetalhes = async (id) =>{
@@ -77,6 +85,7 @@ export default function Recintos(){
                                                 }}
                                                 selecionado={selecionado}
                                                 setRecintos = {setRecintos}
+                                                trocarAbaRecCam = {trocarAbaRecCam}
                                               />}
 
     </div>

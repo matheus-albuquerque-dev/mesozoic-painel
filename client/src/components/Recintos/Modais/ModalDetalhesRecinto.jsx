@@ -40,8 +40,14 @@ const delRecinto = async (id, nome, fechar, setRecintos) =>{
 }
 
 //MODAL INFORMATIVO DE RECINTOS
-export default function ModalDetalhesRecinto({abrirEdit, fechar, selecionado, setRecintos}){
+export default function ModalDetalhesRecinto({abrirEdit, fechar, selecionado, setRecintos, trocarAbaRecCam}){
   if (!selecionado) return null//seguranca
+
+  const handleVerCameras = () =>{
+    fechar()
+    const id = selecionado.id || selecionado.recinto_id//fallback
+    trocarAbaRecCam(id)
+  }
 
   return(
     <div className="modalBg">
@@ -99,7 +105,7 @@ export default function ModalDetalhesRecinto({abrirEdit, fechar, selecionado, se
                 </p>
             </div>
             
-            <button id="btnVerCameras">
+            <button id="btnVerCameras" onClick={handleVerCameras}>
                 VER CÂMERAS
             </button>
         
