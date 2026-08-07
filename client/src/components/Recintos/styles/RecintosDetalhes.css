@@ -5,11 +5,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
 }
 
 .modalDetalhesRecinto{
-    font-family: monospace;
     color: #00ff88;
     position: relative;
     width: 80vw;
@@ -41,7 +39,6 @@
 }
 
 .acoesRecinto button{
-    font-family: monospace;
     font-size: 0.8rem;
     padding: 8px 12px;
 }

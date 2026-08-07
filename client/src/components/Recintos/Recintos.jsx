@@ -31,9 +31,7 @@ export default function Recintos(){
 
   return(
     <div className="recintos">
-      <header>
-        <h1 id="header">Lista de Recintos</h1>
-      </header>
+      <h1 id="headerRecinto">Lista de Recintos</h1>
 
       <div className="catalogoRecintos">
         {Array.isArray(recintos) && recintos.map((recinto) =>(

@@ -1,7 +1,9 @@
-#header{
-    font-family: monospace;
-    font-size: 2rem;
-    color: white;
+#headerRecinto{
+  width: 100%;
+  font-size: 4rem;
+  color: white;
+  text-align: center;
+  margin: 0 0 4vh 0;
 }
 
 .catalogoRecintos{

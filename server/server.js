@@ -22,7 +22,7 @@ app.get('/especies', async (_, res) =>{
     const {rows} = await pool.query('SELECT * FROM especies ORDER BY id DESC')
     res.status(200).json(rows)
   } catch (err){
-    res.status(500).json({error: "Erro interno."})
+    res.status(500).json({error: "Erro interno na busca de espécie."})
   }
 })
 
@@ -40,7 +40,7 @@ app.post('/especies', async (req, res) =>{
     if (err.code === '23505'){//23505->violação de unicidade, nome já existe
       return res.status(400).json({ error: "Esta espécie já foi catalogada." })
     }
-    res.status(500).json({ error: "Erro interno ao salvar espécie." })
+    res.status(500).json({error: "Erro interno ao salvar nova espécie."})
   }
 })
 
@@ -80,7 +80,7 @@ app.patch('/especies/:id', async (req, res) =>{
     if (err.code === '23505'){//23505->violação de unicidade, nome já existe
       return res.status(400).json({ error: "Outra espécie já possui este nome." })
     }
-    res.status(500).json({error: "Erro interno ao atualizar."})
+    res.status(500).json({error: "Erro interno ao atualizar espécie."})
   }
 })
 
@@ -142,7 +142,7 @@ app.patch('/especies/:id', async (req, res) =>{
     res.status(200).json(rows[0])
 
   } catch (err){
-    res.status(500).json({ error: err.message })
+    res.status(500).json({error: err.message})
   }
 })
 
@@ -160,7 +160,34 @@ app.delete('/especies/:id', async (req, res) =>{
 
   }catch (err){
     console.error('Erro ao deletar espécie:', err)
-    return res.status(500).json({error: 'Erro interno durante exclusão de espécie.'})
+    return res.status(500).json({error: 'Erro interno na exclusão de espécie.'})
+  }
+})
+
+//CAMERAS==========================================================================================================
+app.get('/recintos/cameras', async (req, res) =>{
+  try{
+    const query = `
+      SELECT 
+        r.id AS recinto_id,
+        r.nome AS recinto_nome,
+        json_agg(
+          json_build_object(
+            'id', c.id, 
+            'nome', c.nome, 
+            'img_cam', c.img_cam
+          )
+        ) AS cameras
+      FROM recintos r
+      INNER JOIN cameras c ON r.id = c.recinto_id
+      GROUP BY r.id;
+    `
+
+    const result = await pool.query(query)
+    res.json(result.rows)
+  }catch (err){
+    console.error(err)
+    res.status(500).json({error: "Erro ao buscar câmeras dos recintos."})
   }
 })
 
@@ -193,6 +220,7 @@ app.get("/recintos/preview", async (req, res) =>{
 })
 
 //retorna os detalhes de um recinto especifico
+//TODO: TENTAR OUTRO METODO
 app.get('/recintos/:id', async (req, res) =>{
   try{
     const {id} = req.params

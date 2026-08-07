@@ -1,0 +1,134 @@
+/*MODAL EM SI*/
+.modalCamBg{
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalCamContainer{
+  color: #00ff88;
+  position: relative;
+  width: 80vw;
+  height: 88vh;
+  background: black;
+  border: 2px solid #00ff88;
+  padding: 32px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.btnFecharCamModal{
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+  font-size: 1.2rem;
+  padding: 4px 12px;
+  z-index: 10;
+}
+
+.layoutCam{
+  display: flex;
+  gap: 32px;
+  width: 100%;
+  height: 100%;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+/*SIDEBAR*/
+.sidebarCam{
+  width: 16vw;
+  display: flex;
+  flex-direction: column;
+  gap: 4vh;
+  overflow-y: auto;
+  padding-right: 12px;
+}
+
+.sidebarCam::-webkit-scrollbar{
+  width: 8px;
+}
+.sidebarCam::-webkit-scrollbar-thumb{
+  background: #00ff88;
+}
+
+.miniCamSidebar{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.8;
+}
+
+.miniCamSidebar:hover, .miniCamSidebar.ativa{
+  opacity: 1;
+}
+
+.miniCamSidebar img{
+  width: 100%;
+  height: 20vh;
+  object-fit: cover;
+  border: 1px solid #00ff88;
+}
+
+.miniCamSidebar span{
+  margin-top: 8px;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.miniCamSidebar.ativa img{
+  border: 4px solid #00ff88;
+}
+
+/*CAMERA AMPLIADA*/
+.areaCamSelecionada{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.nomeRecCamSelecionada{
+  font-size: 1.6rem;
+  margin: 0 0 2vh 0;
+  text-align: center;
+}
+
+.camSelecionada{
+  width: 100%;
+  max-width: 60vw;
+  height: 48vh;
+  border: 2px solid #00ff88;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.camSelecionada img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nomeCamSelecionada{
+  font-size: 2rem;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.btnVerSobreRecinto{
+  width: 100%;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  margin-top: auto;
+  margin-bottom: 24px;
+}

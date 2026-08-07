@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar"
 import Dinopedia from "../components/Dinopedia/Dinopedia"
 import Laboratorio from "../components/Genes/Laboratorio"
 import Recintos from "../components/Recintos/Recintos"
-//import Cameras from "../components/Cameras"
+import Cameras from "../components/Cameras/Cameras"
 
 import "../styles/Sistema.css"
 import audioGerenciador from "../utils/audioGerenciador"
@@ -38,7 +38,7 @@ export default function Sistema(){
         {aba === "dinopedia" && <Dinopedia/>}
         {aba === "genes" && <Laboratorio/>}
         {aba === "recintos" && <Recintos/>}
-        {aba === "cameras" && <h1>Câmeras</h1>}
+        {aba === "cameras" && <Cameras/>}
       </div>
     </div>
   )
