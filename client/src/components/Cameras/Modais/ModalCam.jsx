@@ -1,14 +1,23 @@
 import {useState} from "react"
-import "./styles/ModalCam.css"
+import ModalAddCam from "./ModalAddCam"
+import "../styles/ModalCam.css"
 
 export default function ModalCam({fechar, recintoSelecionado, trocarAbaCamRec}){
     if (!recintoSelecionado || !recintoSelecionado.cameras || recintoSelecionado.cameras.length === 0) return null//seguranca
     const [camSelecionada, setcamSelecionada] = useState(recintoSelecionado.cameras[0])//inicializa com primeira cam
+    const [modalAdd, setModalAdd] = useState(false)
+
+    const recintoId = recintoSelecionado.recinto_id || recintoSelecionado.id
 
     const handleVerSobre = ()=>{
         fechar()
         const id = recintoSelecionado.recinto_id || recintoSelecionado.id//fallback
         trocarAbaCamRec(id)
+    }
+
+    const handleCameraAdicionada = (novaCam) =>{
+        recintoSelecionado.cameras.push(novaCam)
+        setcamSelecionada(novaCam)
     }
 
     return(
@@ -19,6 +28,15 @@ export default function ModalCam({fechar, recintoSelecionado, trocarAbaCamRec}){
                 <div className="layoutCam">
                     {/*sidebar de cameras*/}
                     <div className="sidebarCam">
+                        {/*add cam*/}
+                        <button
+                            type="button"
+                            className="btnAddCamSidebar"
+                            onClick={() => setModalAdd(true)}
+                        >
+                        +
+                        </button>
+
                         {recintoSelecionado.cameras.map((cam) => (
                             <button
                                 key={cam.id}
@@ -47,6 +65,14 @@ export default function ModalCam({fechar, recintoSelecionado, trocarAbaCamRec}){
                     </div>
                 </div>
             </div>
+            {/*MODAL DE ADD CAM DENTRO DE UM RECINTO QUE JA TENHA OUTRAS*/}
+            {modalAdd &&(
+                <ModalAddCam
+                fechar={() => setModalAdd(false)}
+                recintoId={recintoId}
+                aoAdicionar={handleCameraAdicionada}
+                />
+            )}
         </div>
     )
 }

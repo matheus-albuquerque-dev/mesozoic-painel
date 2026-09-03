@@ -191,6 +191,29 @@ app.get('/recintos/cameras', async (req, res) =>{
   }
 })
 
+app.post('/recintos/cameras', async (req, res) =>{
+  const {nome, img_cam, recinto_id} = req.body
+
+  try{
+    if (!nome || !img_cam || !recinto_id){
+      return res.status(400).json({error: "Falta nome, imagem ou ID do recindo para cadastrar a câmera."})
+    }
+
+    const query = `
+      INSERT INTO cameras (nome, img_cam, recinto_id)
+      VALUES ($1, $2, $3)
+      RETURNING *;
+    `
+
+    const {rows} = await pool.query(query, [nome, img_cam, recinto_id])
+
+    res.status(201).json(rows[0])
+  } catch (err){
+    console.error("Erro no cadastro de camera:", err)
+    res.status(500).json({error: "Erro interno no cadastro de câmera."})
+  }
+})
+
 //RECINTOS==========================================================================================================
 //retorna so colunas para preview de cada linha
 app.get("/recintos/preview", async (req, res) =>{

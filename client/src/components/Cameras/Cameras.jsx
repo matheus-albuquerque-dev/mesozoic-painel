@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react"
 import CardCamera from "./CardCamera"
-import ModalCam from "./ModalCam"
+import ModalCam from "./Modais/ModalCam"
 import "./styles/Cameras.css"
 
 const API_URL = import.meta.env.VITE_API_URL
@@ -67,6 +67,7 @@ return(
         )}
       </div>
 {/*
+      SERVIRA PARA ADD CAMERAS EM RECINTO QUE NAO TENHA AINDA
       {modalCam === MODAIS.ADD && <ModalAddCamera 
                                     fechar={() => setModalCam(null)} 
                                     setCatalogoCameras={setCatalogoCameras}//render da adicao

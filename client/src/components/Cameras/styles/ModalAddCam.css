@@ -1,0 +1,78 @@
+.modalAddCamBg{
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.modalAddCamContainer{
+  position: relative;
+  width: 36vw;
+  max-width: 80vw;
+  background: black;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+  font-family: monospace;
+  padding: 32px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modalAddCamContainer h2{
+  margin: 0;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+
+.formAddCam{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campoAddCam{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.campoAddCam label{
+  font-size: 0.8rem;
+}
+
+.campoAddCam input{
+  background: black;
+  border: 1px solid #00ff88;
+  color: #00ff88;
+  font-family: monospace;
+  padding: 12px;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.campoAddCam input:focus{
+  border-width: 2px;
+}
+
+.acoesAddCam{
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.btnCancelarAddCam,
+.btnSalvarAddCam{
+  flex: 1;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+  font-family: monospace;
+  padding: 8px;
+  font-size: 0.8rem;
+}

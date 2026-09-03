@@ -137,7 +137,6 @@ export default function ModalAddRecinto({fechar, recintos, setRecintos}){
             <p>{imagemPreview || "Imagem não selecionada."}</p>
           </div>
           <div className="selecaoImagem">
-            {/*TODO: REPETIR ARQUIVOREF CAUSA ERRO?*/}
             <input type="file" ref={arquivoRef}  onChange={escolhaDoArquivo} style={{display: 'none'}}/*esconde feiura*/ accept="image/*"/>
             <button type="button" onClick={handleBotaoClique}>
               Selecione a imagem principal

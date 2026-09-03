@@ -58,6 +58,20 @@
   background: #00ff88;
 }
 
+/*ADD CAM*/
+.btnAddCamSidebar{
+  font-size: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #00ff88;
+  opacity: 0.8;
+}
+
+.btnAddCamSidebar:hover{
+  opacity: 1;
+}
+
 .miniCamSidebar{
   display: flex;
   flex-direction: column;
@@ -103,7 +117,7 @@
 
 .camSelecionada{
   width: 100%;
-  max-width: 60vw;
+  max-width: 52vw;
   height: 48vh;
   border: 2px solid #00ff88;
   display: flex;
