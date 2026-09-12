@@ -1,3 +1,7 @@
+.swal2-container {
+  z-index: 9999 !important;
+}/*ficar por cima de tudo*/
+
 /*ALERTAS PARA MODIFICAÇÃO DE ESPÉCIES*/
 .alertaPopup{
   background-color: black !important;

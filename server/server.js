@@ -214,6 +214,24 @@ app.post('/recintos/cameras', async (req, res) =>{
   }
 })
 
+//pra add cam num recinto que nao tenha
+app.get('/recintos/sem-cameras', async (req, res) =>{
+  try {
+    const query = `
+      SELECT r.id, r.nome 
+      FROM recintos r 
+      LEFT JOIN cameras c ON r.id = c.recinto_id 
+      WHERE c.id IS NULL
+      ORDER BY r.nome ASC;
+    `
+    const {rows} = await pool.query(query)
+    res.status(200).json(rows)
+  } catch (err){
+    console.error("Erro ao buscar recintos sem câmeras:", err)
+    res.status(500).json({error: "Erro interno ao buscar recintos vazios."})
+  }
+})
+
 //RECINTOS==========================================================================================================
 //retorna so colunas para preview de cada linha
 app.get("/recintos/preview", async (req, res) =>{
