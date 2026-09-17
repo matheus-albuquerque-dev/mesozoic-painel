@@ -68,7 +68,7 @@ return(
 
       {modalCam === MODAIS.ADD && (<ModalAddCamInicial 
                                       fechar={() => setModalCam(null)} 
-                                      recarregarCatalogo={buscarCameras} 
+                                      recarregarCatalogoCam={buscarCameras} 
                                     />
                                   )}
       {modalCam === MODAIS.VERMAIS && recintoSelecionado && <ModalCam
@@ -78,9 +78,8 @@ return(
                                                                 }}
                                                                 recintoSelecionado={recintoSelecionado}
                                                                 trocarAbaCamRec = {trocarAbaCamRec}
-                                                                //setCatalogoCameras = {setCatalogoCameras}//pra tirar da render se excluir
+                                                                recarregarCatalogoCam={buscarCameras}
                                                               />}
-
     </div>
   )
 }

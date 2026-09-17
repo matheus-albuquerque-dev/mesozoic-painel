@@ -4,7 +4,7 @@ import "../styles/ModalAddCam.css"//reaproveitamento do estilo
 
 const API_URL = import.meta.env.VITE_API_URL
 
-export default function ModalAddCamInicial({fechar, recarregarCatalogo}){
+export default function ModalAddCamInicial({fechar, recarregarCatalogoCam}){
   const [recintos, setRecintos] = useState([])
   const [carregando, setCarregando] = useState(true)
 
@@ -46,7 +46,7 @@ export default function ModalAddCamInicial({fechar, recarregarCatalogo}){
         setImgCam(caminhoSalvo)
         setImagemInfos(arquivo.name)
       } catch (err){
-        alerta.fire({ title: 'Erro', text: 'Não foi possível copiar a imagem.', showConfirmButton: true })
+        alerta.fire({title: 'Erro', text: 'Não foi possível copiar a imagem.', showConfirmButton: true, confirmButtonText: 'Fechar'})
       }
     } else{
       setImgCam(`/assets/imgs/Cameras/${arquivo.name}`)
@@ -82,7 +82,7 @@ export default function ModalAddCamInicial({fechar, recarregarCatalogo}){
         confirmButtonText: 'Fechar'
       })
 
-      recarregarCatalogo()
+      recarregarCatalogoCam()
       fechar()
 
     } catch (err){

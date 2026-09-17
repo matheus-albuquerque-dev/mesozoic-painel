@@ -1,0 +1,101 @@
+.modalModifCamBg{
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+}
+
+.modalModifCamContainer{
+  position: relative;
+  width: 480px;
+  max-width: 90vw;
+  background: black;
+  border: 2px solid #00ff88;
+  padding: 32px 28px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  color: #00ff88;
+  font-family: monospace;
+}
+
+.btnFecharModifCam{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+  font-size: 0.8rem;
+}
+
+.modalModifCamContainer h2{
+  text-align: center;
+  font-size: 1.4rem;
+  margin: 0 0 24px 0;
+  letter-spacing: 1px;
+}
+
+.formModifCam{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campoModifCam{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.campoModifCam label{
+  font-size: 0.9rem;
+}
+
+.campoModifCam input{
+  background: black;
+  border: 1px solid #00ff88;
+  color: white;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.campoModifCam input:focus{
+  border-color: #00ff88;
+  box-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+}
+
+.selecaoImagemModif{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.btnEscolherImgModif{
+  background: transparent;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+  padding: 8px;
+}
+
+
+.nomeArquivoInfoModif{
+  font-size: 0.8rem;
+  color: #888;
+  margin: 0;
+  word-break: break-all;
+  text-align: center;
+}
+
+.acoesModifCam{
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+}

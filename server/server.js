@@ -232,6 +232,35 @@ app.get('/recintos/sem-cameras', async (req, res) =>{
   }
 })
 
+app.put('/recintos/cameras/:id', async (req, res) =>{
+  try{
+    const {id} = req.params
+    const {nome, img_cam} = req.body
+    const query = `
+      UPDATE cameras 
+      SET nome = $1, img_cam = $2 
+      WHERE id = $3 
+      RETURNING *;
+    `
+    const {rows} = await pool.query(query, [nome, img_cam, id])
+    res.status(200).json(rows[0])
+  } catch (err){
+    console.error("Erro ao editar câmera:", err);
+    res.status(500).json({error: "Erro interno ao editar câmera."})
+  }
+})
+
+app.delete('/recintos/cameras/:id', async (req, res) =>{
+  try{
+    const {id} = req.params
+    await pool.query('DELETE FROM cameras WHERE id = $1', [id])
+    res.status(200).json({message: "Câmera excluída com sucesso."})
+  } catch (err){
+    console.error("Erro ao excluir câmera:", err);
+    res.status(500).json({error: "Erro interno ao excluir câmera."})
+  }
+})
+
 //RECINTOS==========================================================================================================
 //retorna so colunas para preview de cada linha
 app.get("/recintos/preview", async (req, res) =>{

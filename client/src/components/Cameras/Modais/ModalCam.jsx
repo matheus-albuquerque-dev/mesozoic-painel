@@ -1,11 +1,13 @@
 import {useState} from "react"
 import ModalAddCam from "./ModalAddCam"
 import "../styles/ModalCam.css"
+import ModalModifCam from "./ModalModifCam"
 
-export default function ModalCam({fechar, recintoSelecionado, trocarAbaCamRec}){
+export default function ModalCam({fechar, recintoSelecionado, trocarAbaCamRec, recarregarCatalogoCam}){
     if (!recintoSelecionado || !recintoSelecionado.cameras || recintoSelecionado.cameras.length === 0) return null//seguranca
     const [camSelecionada, setcamSelecionada] = useState(recintoSelecionado.cameras[0])//inicializa com primeira cam
     const [modalAdd, setModalAdd] = useState(false)
+    const [modalModifCam, setModalModifCam] = useState(false)//edit e del
 
     const recintoId = recintoSelecionado.recinto_id || recintoSelecionado.id
 
@@ -15,15 +17,44 @@ export default function ModalCam({fechar, recintoSelecionado, trocarAbaCamRec}){
         trocarAbaCamRec(id)
     }
 
-    const handleCameraAdicionada = (novaCam) =>{
+    const handleCamAdicionada = (novaCam) =>{
         recintoSelecionado.cameras.push(novaCam)
         setcamSelecionada(novaCam)
+    }
+
+    const handleCamAtualizada = (camAtualizada) =>{
+        camSelecionada.nome = camAtualizada.nome
+        camSelecionada.img_cam = camAtualizada.img_cam
+        setcamSelecionada({...camSelecionada})//re-render
+        if (recarregarCatalogoCam) recarregarCatalogoCam()
+    }
+
+    const handleCamExcluida = (idExcluido) =>{
+        const listaRestante = recintoSelecionado.cameras.filter(c => c.id !== idExcluido)
+        recintoSelecionado.cameras = listaRestante
+
+        if (listaRestante.length > 0){
+            setcamSelecionada(listaRestante[0])
+        } else{//sem cameras, fecha modal
+            fechar()
+        }
+        if (recarregarCatalogoCam) recarregarCatalogoCam()
     }
 
     return(
         <div className="modalCamBg">
             <div className="modalCamContainer" onClick={(e) => e.stopPropagation()}>
-                <button className="btnFecharCamModal" onClick={fechar}>✕</button>
+
+                <div className="acoesModalCam">
+                    <button 
+                        type="button"
+                        onClick={() => setModalModifCam(true)}
+                    >
+                        MODIFICAR
+                    </button>
+
+                    <button onClick={fechar}>✕</button>
+                </div>
 
                 <div className="layoutCam">
                     {/*sidebar de cameras*/}
@@ -70,7 +101,15 @@ export default function ModalCam({fechar, recintoSelecionado, trocarAbaCamRec}){
                 <ModalAddCam
                 fechar={() => setModalAdd(false)}
                 recintoId={recintoId}
-                aoAdicionar={handleCameraAdicionada}
+                aoAdicionar={handleCamAdicionada}
+                />
+            )}
+            {modalModifCam &&(//edit e del
+                <ModalModifCam
+                    fechar={() => setModalModifCam(false)}
+                    camSelecionada={camSelecionada}
+                    aoAtualizar={handleCamAtualizada}
+                    aoExcluir={handleCamExcluida}
                 />
             )}
         </div>

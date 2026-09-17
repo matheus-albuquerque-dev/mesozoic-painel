@@ -21,17 +21,6 @@
   flex-direction: column;
 }
 
-.btnFecharCamModal{
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  border: 2px solid #00ff88;
-  color: #00ff88;
-  font-size: 1.2rem;
-  padding: 4px 12px;
-  z-index: 10;
-}
-
 .layoutCam{
   display: flex;
   gap: 32px;
@@ -145,4 +134,15 @@
   font-size: 1.2rem;
   margin-top: auto;
   margin-bottom: 24px;
+}
+
+/*editar e excluir cam do modal*/
+.acoesModalCam{
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
 }
