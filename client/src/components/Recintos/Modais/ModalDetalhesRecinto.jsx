@@ -54,8 +54,6 @@ export default function ModalDetalhesRecinto({abrirEdit, fechar, selecionado, se
         <div className="modalDetalhesRecinto" onClick={(e) => e.stopPropagation()}>
             {/*ACOES: FECHAR, EDITAR E EXCLUIR*/}
             <div className="acoesRecinto">
-                <button id="fecharRecinto" onClick={fechar}>✕</button>
-
                 <button id="editRecinto" onClick={abrirEdit}>
                     Editar
                 </button>
@@ -65,16 +63,18 @@ export default function ModalDetalhesRecinto({abrirEdit, fechar, selecionado, se
                 >
                     Excluir Recinto
                 </button>
+
+                <button id="fecharRecinto" onClick={fechar}>✕</button>
             </div>
 
             {/*INFORMACOES E CAMERAS*/}
             <div className="recintoHeader">
+                <p><strong>{selecionado.nome}</strong></p>
                 <img
                         src={selecionado.img_ampliada}
                         alt={selecionado.nome}
                         className="imgAmpliada"
                 />
-                <p><strong>{selecionado.nome}</strong></p>
             </div>
 
             <div className="recintoInfo">
@@ -106,7 +106,7 @@ export default function ModalDetalhesRecinto({abrirEdit, fechar, selecionado, se
             </div>
             
             <button id="btnVerCameras" onClick={handleVerCameras}>
-                VER CÂMERAS
+                VER CÂMERAS DE {selecionado.nome.toUpperCase()}
             </button>
         
         </div>

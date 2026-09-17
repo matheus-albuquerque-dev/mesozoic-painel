@@ -91,7 +91,7 @@ export default function ModalCam({fechar, recintoSelecionado, trocarAbaCamRec, r
                         <h3 className="nomeCamSelecionada">{camSelecionada.nome}</h3>
 
                         <button className="btnVerSobreRecinto" onClick={handleVerSobre}>
-                            VER SOBRE {recintoSelecionado.recinto_nome}
+                            VER SOBRE {recintoSelecionado.recinto_nome.toUpperCase()}
                         </button>
                     </div>
                 </div>
